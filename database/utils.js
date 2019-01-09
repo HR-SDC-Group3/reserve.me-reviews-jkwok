@@ -1,10 +1,8 @@
 const faker = require('faker');
-const db = require('./index.js');
-const saratogaData = require('./the_saratoga.json');
 
 const generateNickname = () => faker.name.firstName() + faker.name.lastName().slice(0, 1);
 const generateLocation = () => faker.address.city();
-const generateReviewCount = () => faker.random.number({ min: 1, max: 27 });
+const generateReviewCount = () => faker.random.number({ min: 1, max: 5 });
 const generateDateDined = () => faker.date.between('2016-01-01', '2018-12-31');
 const generateRatings = () => faker.random.number({ min: 1, max: 5 });
 const generateNoiseLevel = () => faker.random.arrayElement(['do not recall', 'quiet', 'moderate', 'energetic']);
@@ -74,9 +72,9 @@ const generateTags = () => {
 };
 const generateRestaurantId = () => faker.random.number({ min: 2, max: 500000 });
 
-const generateReviews = (callback) => {
+const createRandomReviews = (n) => {
   const reviews = [];
-  for (let i = 0; i <= 3000; i += 1) {
+  for (let i = 0; i < n; i += 1) {
     reviews.push({
       restaurant: {
         id: generateRestaurantId(),
@@ -105,20 +103,9 @@ const generateReviews = (callback) => {
       },
     });
   }
-  callback(reviews.concat(saratogaData));
+  return reviews;
 };
 
-generateReviews((reviews) => {
-  db.conn.then(() => {
-    db.save(reviews, (err, res) => {
-      if (err) {
-        return console.log(err);
-      }
-      db.conn.close();
-      // return console.log('Review got inserted', res);
-    });
-  })
-    .catch((err) => {
-      console.log(err);
-    });
-});
+module.exports = {
+  createRandomReviews,
+};

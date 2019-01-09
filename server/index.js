@@ -25,6 +25,7 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
     sortQuery = req.query.sort;
   }
   const parsedId = parseInt(req.params.id, 10);
+  console.log('parsedId', parsedId);
   db.retrieveReviews(parsedId, sortQuery, (err, results) => {
     if (err) {
       res.status(404).end();
@@ -33,4 +34,16 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   });
 });
 
-app.listen(port, () => console.log(`listening on port ${port}!`));
+app.post('/api/restaurants/:id/reviews', (req, res) => {
+
+});
+
+app.put('/api/restaurants/:id/reviews', (req, res) => {
+
+});
+
+app.delete('/api/restaurants/:id/reviews', (req, res) => {
+
+});
+
+app.listen(port, () => console.log(`Listening on port ${port}`));

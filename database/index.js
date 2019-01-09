@@ -1,4 +1,4 @@
-const uri = 'mongodb://172.17.0.2:27017/fec';
+const uri = 'mongodb://localhost:27017/reserve-me';
 const mongoose = require('mongoose');
 
 const serverOptions = {
@@ -11,6 +11,7 @@ const serverOptions = {
 };
 const conn = mongoose.createConnection(uri, {
   server: serverOptions,
+  useNewUrlParser: true,
 });
 
 const reviewsSchema = mongoose.Schema({
