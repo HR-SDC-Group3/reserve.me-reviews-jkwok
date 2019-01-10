@@ -45,7 +45,16 @@ app.post('/api/restaurants/:id/reviews/:qty', (req, res) => {
 });
 
 app.put('/api/restaurants/:id/reviews/:qty', (req, res) => {
-
+  const parsedId = parseInt(req.params.id, 10);
+  const quantity = req.params.qty;
+  db.deleteReviews(parsedId, () => {
+    db.addReviews(parsedId, quantity, (err, results) => {
+      if (err) {
+        res.status(404).end();
+      }
+      res.send(results);
+    });
+  });
 });
 
 app.delete('/api/restaurants/:id/reviews', (req, res) => {
