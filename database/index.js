@@ -17,6 +17,7 @@ const conn = mongoose.createConnection(uri, {
 });
 
 const reviewsSchema = mongoose.Schema({
+  name: String,
   restaurant: {
     id: Number,
   },

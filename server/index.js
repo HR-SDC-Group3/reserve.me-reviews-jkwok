@@ -44,7 +44,7 @@ app.post('/api/restaurants/:id/reviews/:qty', (req, res) => {
   });
 });
 
-app.put('/api/restaurants/:id/reviews', (req, res) => {
+app.put('/api/restaurants/:id/reviews/:qty', (req, res) => {
 
 });
 

@@ -74,6 +74,7 @@ const generateTags = () => {
 
 const createRandomReview = (restId) => {
   return {
+    name: `restaurant${String(restId)}`,
     restaurant: {
       id: restId,
     },
