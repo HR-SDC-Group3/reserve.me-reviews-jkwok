@@ -2,7 +2,7 @@ const faker = require('faker');
 
 const generateNickname = () => faker.name.firstName() + faker.name.lastName().slice(0, 1);
 const generateLocation = () => faker.address.city();
-const generateReviewCount = () => faker.random.number({ min: 1, max: 5 });
+const generateReviewCount = () => faker.random.number({ min: 1, max: 27 });
 const generateDateDined = () => faker.date.between('2016-01-01', '2018-12-31');
 const generateRatings = () => faker.random.number({ min: 1, max: 5 });
 const generateNoiseLevel = () => faker.random.arrayElement(['do not recall', 'quiet', 'moderate', 'energetic']);
@@ -70,42 +70,37 @@ const generateTags = () => {
   }
   return tagsArr;
 };
-const generateRestaurantId = () => faker.random.number({ min: 2, max: 500000 });
 
-const createRandomReviews = (n) => {
-  const reviews = [];
-  for (let i = 0; i < n; i += 1) {
-    reviews.push({
-      restaurant: {
-        id: generateRestaurantId(),
+const createRandomReview = (restId) => {
+  return {
+    restaurant: {
+      id: restId,
+    },
+    reviewer: {
+      id: null,
+      nickname: generateNickname(),
+      location: generateLocation(),
+      review_count: generateReviewCount(),
+      date_dined: generateDateDined(),
+    },
+    review: {
+      id: null,
+      ratings: {
+        overall: generateRatings(),
+        food: generateRatings(),
+        service: generateRatings(),
+        ambience: generateRatings(),
+        value: generateRatings(),
+        noise_level: generateNoiseLevel(),
       },
-      reviewer: {
-        id: i,
-        nickname: generateNickname(),
-        location: generateLocation(),
-        review_count: generateReviewCount(),
-        date_dined: generateDateDined(),
-      },
-      review: {
-        id: i,
-        ratings: {
-          overall: generateRatings(),
-          food: generateRatings(),
-          service: generateRatings(),
-          ambience: generateRatings(),
-          value: generateRatings(),
-          noise_level: generateNoiseLevel(),
-        },
-        recommend_to_friend: generateRecommend(),
-        text: generateReviewContent(),
-        helpful_count: generateHelpfulCount(),
-        tags: generateTags(),
-      },
-    });
-  }
-  return reviews;
+      recommend_to_friend: generateRecommend(),
+      text: generateReviewContent(),
+      helpful_count: generateHelpfulCount(),
+      tags: generateTags(),
+    },
+  };
 };
 
 module.exports = {
-  createRandomReviews,
+  createRandomReview,
 };

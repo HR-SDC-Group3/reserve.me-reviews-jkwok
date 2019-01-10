@@ -1,5 +1,6 @@
 const uri = 'mongodb://localhost:27017/reserve-me';
 const mongoose = require('mongoose');
+const { createRandomReview } = require('./helpers.js');
 
 const serverOptions = {
   auto_reconnect: true,
@@ -11,6 +12,7 @@ const serverOptions = {
 };
 const conn = mongoose.createConnection(uri, {
   server: serverOptions,
+  useCreateIndex: true,
   useNewUrlParser: true,
 });
 
@@ -68,8 +70,14 @@ const retrieveReviews = (restId, sort, callback) => {
     .exec(callback);
 };
 
+const addReview = (restId, callback) => {
+  const review = createRandomReview(restId);
+  Review.create(review, callback);
+};
+
 module.exports = {
   conn,
   save,
+  addReview,
   retrieveReviews,
 };

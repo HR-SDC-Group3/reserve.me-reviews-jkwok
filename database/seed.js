@@ -72,11 +72,11 @@ const generateTags = () => {
   }
   return tagsArr;
 };
-const generateRestaurantId = () => faker.random.number({ min: 2, max: 500000 });
+const generateRestaurantId = () => faker.random.number({ min: 2, max: 100 });
 
 const generateReviews = (callback) => {
   const reviews = [];
-  for (let i = 0; i <= 3000; i += 1) {
+  for (let i = 0; i <= 1000; i += 1) {
     reviews.push({
       restaurant: {
         id: generateRestaurantId(),

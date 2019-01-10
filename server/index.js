@@ -8,7 +8,7 @@ const compression = require('compression');
 const db = require('./../database/index.js');
 
 app.use(morgan('tiny'));
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
 
 app.use('/restaurants/:id', express.static(`${__dirname}/../client/dist`));
@@ -25,7 +25,6 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
     sortQuery = req.query.sort;
   }
   const parsedId = parseInt(req.params.id, 10);
-  console.log('parsedId', parsedId);
   db.retrieveReviews(parsedId, sortQuery, (err, results) => {
     if (err) {
       res.status(404).end();
@@ -34,8 +33,14 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   });
 });
 
-app.post('/api/restaurants/:id/reviews', (req, res) => {
-
+app.post('/api/restaurants/:id/reviews/', (req, res) => {
+  const parsedId = parseInt(req.params.id, 10);
+  db.addReview(parsedId, (err, results) => {
+    if (err) {
+      res.status(404).end();
+    }
+    res.status(201).send(results);
+  });
 });
 
 app.put('/api/restaurants/:id/reviews', (req, res) => {
