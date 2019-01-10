@@ -1,5 +1,6 @@
-const uri = 'mongodb://172.17.0.2:27017/fec';
+const uri = 'mongodb://localhost:27017/reserve-me';
 const mongoose = require('mongoose');
+const { createRandomReview } = require('./helpers.js');
 
 const serverOptions = {
   auto_reconnect: true,
@@ -11,9 +12,12 @@ const serverOptions = {
 };
 const conn = mongoose.createConnection(uri, {
   server: serverOptions,
+  useCreateIndex: true,
+  useNewUrlParser: true,
 });
 
 const reviewsSchema = mongoose.Schema({
+  name: String,
   restaurant: {
     id: Number,
   },
@@ -67,8 +71,22 @@ const retrieveReviews = (restId, sort, callback) => {
     .exec(callback);
 };
 
+const addReviews = (restId, qty, callback) => {
+  const reviews = [];
+  for (let i = 0; i < qty; i += 1) {
+    reviews.push(createRandomReview(restId));
+  }
+  Review.create(reviews, callback);
+};
+
+const deleteReviews = (restId, callback) => {
+  Review.deleteMany({ restaurant: { id: restId } }, callback);
+};
+
 module.exports = {
   conn,
   save,
   retrieveReviews,
+  addReviews,
+  deleteReviews,
 };

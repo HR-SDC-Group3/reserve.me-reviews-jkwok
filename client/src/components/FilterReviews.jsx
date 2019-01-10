@@ -27,9 +27,7 @@ const FilterReviews = (props) => {
     }
   }
   sortedTags.sort((a, b) => b[1] - a[1]);
-  const topTags = props.ratingNum
-    ? [[props.ratingNum]].concat(sortedTags.slice(0, 4))
-    : sortedTags.slice(0, 4);
+  const topTags = sortedTags.slice(0, 4);
   return (
     <div className="reviewFilters">
       <Styled.FilterTitle>
