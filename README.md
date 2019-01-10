@@ -4,10 +4,10 @@
 
 ## Related Projects
 
-  - https://github.com/reserveMe/menu-cards-service
-  - https://github.com/reserveMe/photo-carousel-server
-  - https://github.com/reserveMe/reservation-calendar-service
-  - https://github.com/reserveMe/reviews-proxy
+  - https://github.com/HR-SDC-Group3/menu-cards-service
+  - https://github.com/HR-SDC-Group3/photo-carousel-service
+  - https://github.com/HR-SDC-Group3/Service-Mike
+  - https://github.com/HR-SDC-Group3/proxy-johnson-kwok
 
 ## Usage
 
