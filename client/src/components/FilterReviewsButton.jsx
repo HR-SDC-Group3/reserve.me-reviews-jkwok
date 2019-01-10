@@ -13,34 +13,24 @@ class FilterReviewsButton extends React.Component {
 
   handleFilterClick(e) {
     const { handleReviewsFilter } = this.props;
-    if (!parseInt(e.target.name, 10)) {
-      this.setState({
-        clicked: !this.state.clicked,
-      });
-      handleReviewsFilter(e.target.name);
-    }
+    handleReviewsFilter(e.target.name);
+    this.setState((state) => ({
+      clicked: !state.clicked,
+    }));
   }
 
   render() {
     const { tag } = this.props;
-    const addDot = this.state.clicked || tag[0] <= 5
+    const addDot = this.state.clicked
       ? (<Styled.FilterDot />)
       : (' ');
-    const tagTwo = tag[0] <= 5
-      ? <br />
-      : (
-        <Styled.FilterTagTwo>
-          {' '}
-          {'('}
-          {tag[1]}
-          {')'}
-        </Styled.FilterTagTwo>
-      );
     return (
       <Styled.FilterButton name={tag[0]} onClick={this.handleFilterClick}>
         {tag[0]}
         {' '}
-        {tagTwo}
+        (
+        {tag[1]}
+        )
         {' '}
         {addDot}
       </Styled.FilterButton>

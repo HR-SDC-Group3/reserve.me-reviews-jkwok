@@ -14,7 +14,6 @@ export default class App extends React.Component {
       reviews: [],
       sortBy: 'newest',
       filteredReviews: [],
-      ratingNum: null,
     };
     this.getReviewsSorted = this.getReviewsSorted.bind(this);
     this.handleRatingsFilterChange = this.handleRatingsFilterChange.bind(this);
@@ -54,9 +53,6 @@ export default class App extends React.Component {
 
   handleRatingsFilterChange(rating) {
     const ratingNum = parseInt(rating, 10);
-    this.setState({
-      ratingNum,
-    });
     const filteredReviews = this.state.reviews.filter(element => element.review.ratings.overall === ratingNum);
     this.setState({
       filteredReviews,
@@ -64,9 +60,7 @@ export default class App extends React.Component {
   }
 
   render() {
-    const pagedReviews = this.state.filteredReviews.length 
-      ? this.state.filteredReviews 
-      : this.state.reviews;
+    const pagedReviews = this.state.filteredReviews.length ? this.state.filteredReviews : this.state.reviews;
     return (
       <div className="reviewsTotal">
         <Styled.ReviewOverviewTitle>
@@ -82,7 +76,7 @@ export default class App extends React.Component {
           <RatingsGraph reviews={this.state.reviews} handleRatingsFilter={this.handleRatingsFilterChange} />
         </Styled.RatingsOverviewTable>
         <SortReviews handleSortByChange={this.handleSortByChange} />
-        <PaginatedReviews reviews={pagedReviews} ratingNum={this.state.ratingNum} />
+        <PaginatedReviews reviews={pagedReviews} />
         <GlobalStyle />
       </div>
     );
