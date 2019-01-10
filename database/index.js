@@ -70,14 +70,22 @@ const retrieveReviews = (restId, sort, callback) => {
     .exec(callback);
 };
 
-const addReview = (restId, callback) => {
-  const review = createRandomReview(restId);
-  Review.create(review, callback);
+const addReviews = (restId, qty, callback) => {
+  const reviews = [];
+  for (let i = 0; i < qty; i += 1) {
+    reviews.push(createRandomReview(restId));
+  }
+  Review.create(reviews, callback);
+};
+
+const deleteReviews = (restId, callback) => {
+  Review.deleteMany({ restaurant: { id: restId } }, callback);
 };
 
 module.exports = {
   conn,
   save,
-  addReview,
   retrieveReviews,
+  addReviews,
+  deleteReviews,
 };

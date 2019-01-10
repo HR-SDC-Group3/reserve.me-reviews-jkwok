@@ -33,9 +33,10 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   });
 });
 
-app.post('/api/restaurants/:id/reviews/', (req, res) => {
+app.post('/api/restaurants/:id/reviews/:qty', (req, res) => {
   const parsedId = parseInt(req.params.id, 10);
-  db.addReview(parsedId, (err, results) => {
+  const quantity = req.params.qty;
+  db.addReviews(parsedId, quantity, (err, results) => {
     if (err) {
       res.status(404).end();
     }
@@ -48,7 +49,13 @@ app.put('/api/restaurants/:id/reviews', (req, res) => {
 });
 
 app.delete('/api/restaurants/:id/reviews', (req, res) => {
-
+  const parsedId = parseInt(req.params.id, 10);
+  db.deleteReviews(parsedId, (err, results) => {
+    if (err) {
+      res.status(404).end();
+    }
+    res.send(results);
+  });
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
