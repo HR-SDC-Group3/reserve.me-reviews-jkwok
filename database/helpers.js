@@ -9,7 +9,8 @@ const generateNoiseLevel = () => faker.random.arrayElement(['do not recall', 'qu
 const generateRecommend = () => faker.random.boolean();
 const generateReviewContent = () => faker.lorem.paragraph();
 const generateHelpfulCount = () => faker.random.number({ min: 0, max: 3 });
-const generateRandomId = () => faker.random.number(999999);
+const generateRandomReviewerId = () => faker.random.number(5000000);
+const generateRandomReviewId = () => faker.random.number(50000000);
 const generateTags = () => {
   const tagsArr = [];
   let randNum = faker.random.number({ min: 0, max: 6 });
@@ -79,14 +80,14 @@ const createRandomReview = (restId) => {
       id: restId,
     },
     reviewer: {
-      id: generateRandomId(),
+      id: generateRandomReviewerId(),
       nickname: generateNickname(),
       location: generateLocation(),
       review_count: generateReviewCount(),
       date_dined: generateDateDined(),
     },
     review: {
-      id: generateRandomId(),
+      id: generateRandomReviewId(),
       ratings: {
         overall: generateRatings(),
         food: generateRatings(),

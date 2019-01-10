@@ -25,4 +25,4 @@ build/
 dist/bundle.js
 
 # Dummy Data
-database/sampleData.txt
+database/data
