@@ -1,12 +1,12 @@
 const fs = require('fs');
 const faker = require('faker');
 const path = require('path');
-const { createRandomReview } = require('./helpers.js');
+const { createRandomReview, createRandRestaurant } = require('./helpers.js');
 
-const generateRestaurantId = () => faker.random.number({ min: 1, max: 10000000 });
-let fileNumber = 1;
-const writeStream = fs.createWriteStream(path.join(__dirname, `/data/sampleData${fileNumber}.json`));
-const numRecords = 50000000;
+const generateRestaurantId = () => faker.random.number({ min: 1, max: 100 });
+let fileNumber = 1000;
+const writeStream = fs.createWriteStream(path.join(__dirname, `/data/sampleData${fileNumber}.csv`));
+const numRecords = 1000;
 let percentComplete = 0;
 let i = 1;
 console.time('Runtime');
@@ -14,8 +14,8 @@ console.time('Runtime');
 const writeRecords = () => {
   let notBuffering = true;
   while (i <= numRecords && notBuffering) {
-    const restId = generateRestaurantId();
-    const entry = createRandomReview(restId, i);
+    // const restId = generateRestaurantId();
+    const entry = createRandRestaurant(i);
     notBuffering = writeStream.write(`${JSON.stringify(entry)}\n`);
 
     if (i % (numRecords / 20) === 0 && i !== 0) {

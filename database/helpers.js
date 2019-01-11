@@ -2,6 +2,7 @@ const faker = require('faker');
 
 const generateNickname = () => faker.name.firstName() + faker.name.lastName().slice(0, 1);
 const generateLocation = () => faker.address.city();
+const generateRestReviewCount = () => faker.random.number({ min: 0, max: 6 });
 const generateReviewCount = () => faker.random.number({ min: 1, max: 27 });
 const generateDateDined = () => faker.date.between('2016-01-01', '2018-12-31');
 const generateRatings = () => faker.random.number({ min: 1, max: 5 });
@@ -104,6 +105,42 @@ const createRandomReview = (restId, revId = generateRandomReviewId()) => {
   };
 };
 
+const createRandRestaurant = (restId) => {
+  const insertedReviews = [];
+  for (let i = 0; i < generateRestReviewCount(); i += 1) {
+    insertedReviews.push({
+      reviewer: {
+        id: generateRandomReviewerId(),
+        nickname: generateNickname(),
+        location: generateLocation(),
+        review_count: generateReviewCount(),
+        date_dined: generateDateDined(),
+      },
+      review: {
+        id: i,
+        ratings: {
+          overall: generateRatings(),
+          food: generateRatings(),
+          service: generateRatings(),
+          ambience: generateRatings(),
+          value: generateRatings(),
+          noise_level: generateNoiseLevel(),
+        },
+        recommend_to_friend: generateRecommend(),
+        text: generateReviewContent(),
+        helpful_count: generateHelpfulCount(),
+        tags: generateTags(),
+      },
+    });
+  }
+  return {
+    _id: restId,
+    name: `restaurant${String(restId)}`,
+    reviews: insertedReviews,
+  };
+};
+
 module.exports = {
   createRandomReview,
+  createRandRestaurant,
 };

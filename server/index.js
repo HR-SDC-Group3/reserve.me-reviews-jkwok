@@ -5,11 +5,13 @@ const port = 3004;
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+// const cors = require('cors');
 const db = require('./../database/index.js');
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
+// app.use(cors());
 
 app.use('/restaurants/:id', express.static(`${__dirname}/../client/dist`));
 
@@ -29,7 +31,7 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
     if (err) {
       res.status(404).end();
     }
-    res.send(results);
+    res.send(results.reviews);
   });
 });
 

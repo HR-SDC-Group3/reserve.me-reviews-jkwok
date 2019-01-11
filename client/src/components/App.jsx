@@ -26,10 +26,11 @@ export default class App extends React.Component {
     fetch(`/api/restaurants/${id}/reviews`)
       .then(response => response.json())
       .then((data) => {
+        console.log('the data', data);
         this.setState({
           reviews: data,
         });
-      });
+      }).catch(err => console.error(err));
   }
 
   getReviewsSorted() {
