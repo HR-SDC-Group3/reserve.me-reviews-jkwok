@@ -7,7 +7,7 @@ const generateDateDined = () => faker.date.between('2016-01-01', '2018-12-31');
 const generateRatings = () => faker.random.number({ min: 1, max: 5 });
 const generateNoiseLevel = () => faker.random.arrayElement(['do not recall', 'quiet', 'moderate', 'energetic']);
 const generateRecommend = () => faker.random.boolean();
-const generateReviewContent = () => faker.lorem.paragraphs(3);
+const generateReviewContent = () => faker.lorem.paragraphs(1);
 const generateHelpfulCount = () => faker.random.number({ min: 0, max: 3 });
 const generateRandomReviewerId = () => faker.random.number(5000000);
 const generateRandomReviewId = () => faker.random.number(50000000);

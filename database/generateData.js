@@ -28,13 +28,15 @@ const writeOneRecord = () => {
       console.log(loadingMsg);
       fileNumber += 1;
     }
-
     i += 1;
   }
   writeStream.end();
+};
+
+writeStream.on('finish', () => {
   console.log('Done writing!');
   console.timeEnd('Runtime');
-};
+});
 
 writeStream.on('drain', () => {
   writeOneRecord();
