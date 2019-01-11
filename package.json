@@ -14,7 +14,8 @@
     "react-dev": "webpack -d --watch",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --colors"
+    "test:coverage": "jest --coverage --colors",
+    "mongoSeed": "mongoimport --db reserve-me --collection reviews --file data/sampleData1.json"
   },
   "dependencies": {
     "@types/url-parse": "^1.4.1",

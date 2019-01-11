@@ -10,7 +10,7 @@ class PaginatedReviews extends React.Component {
     super(props);
     this.state = {
       currentPage: 1,
-      pageLimit: 20,
+      pageLimit: 5,
       filters: [],
     };
     this.handlePageRender = this.handlePageRender.bind(this);
