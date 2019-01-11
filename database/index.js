@@ -95,19 +95,8 @@ const save = (reviews, callback) => {
   Restaurant.insertMany(reviews, callback);
 };
 
-const retrieveReviews = (restId, sort, callback) => {
-  let sortQuery;
-  if (sort === 'newest') {
-    sortQuery = { 'reviewer.date_dined': -1 };
-  } else if (sort === 'highest_rating') {
-    sortQuery = { 'review.ratings.overall': -1 };
-  } else if (sort === 'lowest_rating') {
-    sortQuery = { 'review.ratings.overall': 1 };
-  }
+const retrieveReviews = (restId, callback) => {
   Restaurant.findOne({ _id: restId })
-    .then((restaurant) => {
-      return restaurant.reviews;
-    }).sort(sortQuery)
     .exec(callback);
 };
 

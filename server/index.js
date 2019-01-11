@@ -5,6 +5,7 @@ const port = 3004;
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const _ = require('underscore');
 // const cors = require('cors');
 const db = require('./../database/index.js');
 
@@ -22,16 +23,30 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/restaurants/:id/reviews', (req, res) => {
-  let sortQuery = 'newest';
+  let sort = 'newest';
   if (req.query.sort) {
-    sortQuery = req.query.sort;
+    sort = req.query.sort;
   }
   const parsedId = parseInt(req.params.id, 10);
-  db.retrieveReviews(parsedId, sortQuery, (err, results) => {
+  db.retrieveReviews(parsedId, (err, results) => {
     if (err) {
       res.status(404).end();
     }
-    res.send(results.reviews);
+    let reviews = (results === null) ? [] : results.reviews;
+    if (reviews.length > 0) {
+      reviews = _.sortBy(reviews, (review) => {
+        if (sort === 'newest') {
+          return -review.reviewer.date_dined;
+        }
+        if (sort === 'highest_rating') {
+          return -review.review.ratings.overall;
+        }
+        if (sort === 'lowest_rating') {
+          return review.review.ratings.overall;
+        }
+      });
+    }
+    res.send(reviews);
   });
 });
 
