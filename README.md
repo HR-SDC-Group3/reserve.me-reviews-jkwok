@@ -23,24 +23,24 @@
 
 ### CREATE
 * HTTP request method: POST
-* Endpoint: `/api/restaurants/:id/reviews/:qty`
-* Required Parameters: id and qty
-* Expected Output: An array of the reviews that were added to the db
+* Endpoint: `/api/restaurants/:id/reviews/`
+* Required Parameters: restaurant id
+* Description: Adds one review to a restaurant with pre-existing reviews (cannot add to a restaurant that didn't already have a record in the db)
 
 ### READ
 * HTTP request method: GET
 * Endpoint: `/api/restaurants/:id/reviews`
-* Required Parameters: id
-* Expected Output: An array of all the reviews for the specified restaurant
+* Required Parameters: restaurant id
+* Description: Retrieves an array of all the reviews for the specified restaurant
 
 ### UPDATE
 * HTTP request method: PUT
 * Endpoint: `/api/restaurants/:id/reviews/:qty`
-* Required Parameters: id and qty
-* Expected Output: An array of the reviews that replaced the original reviews for the specified restaurant. This method updates all of the reviews for a restaurant by removing all the current reviews and a adding a specified quantity of new reviews.
+* Required Parameters: restaurant id
+* Description: Replaces all of the reviews for the specified restaurant with a random number of new reviews (including 0 reviews)
 
 ### DELETE
 * HTTP request method: DELETE
 * Endpoint: `/api/restaurants/:id/reviews`
-* Required Parameters: id
-* Expected Output: An object with a property "n" that has a value indicating the number of reviews that were deleted from the db. This method removes all the reviews for the specified restaurant.
+* Required Parameters: restaurant id
+* Description: Removes all the reviews for the specified restaurant

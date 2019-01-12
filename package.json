@@ -15,7 +15,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
-    "mongoSeed": "mongoimport --db reserve-me --collection reviews --file database/data/sampleData1.json"
+    "writeData": "node database/generateData.js",
+    "mongoSeed": "mongoimport --db reserve-me --collection restaurants --file database/data/sampleData1.csv"
   },
   "dependencies": {
     "@types/url-parse": "^1.4.1",
