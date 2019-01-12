@@ -2,9 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { createRandRestaurant } = require('./helpers.js');
 
-let fileNumber = 1;
-const writeStream = fs.createWriteStream(path.join(__dirname, `/data/sampleData${fileNumber}.csv`));
-const numRecords = 1000;
+const dbName = 'Mongo';
+const writeStream = fs.createWriteStream(path.join(__dirname, `/data/sampleData${dbName}.csv`));
+const numRecords = 10000000;
 let percentComplete = 0;
 let i = 1;
 console.time('Runtime');
@@ -19,7 +19,6 @@ const writeRecords = () => {
       percentComplete += 5;
       const loadingMsg = `Writing to file...[${percentComplete}% complete]`;
       console.log(loadingMsg);
-      fileNumber += 1;
     }
     if (i === numRecords) {
       console.log('WRITING HAS COMPLETED!');
