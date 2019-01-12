@@ -2,6 +2,7 @@ const faker = require('faker');
 
 const generateNickname = () => faker.name.firstName() + faker.name.lastName().slice(0, 1);
 const generateLocation = () => faker.address.city();
+const generateRestReviewCount = () => faker.random.number({ min: 0, max: 15 });
 const generateReviewCount = () => faker.random.number({ min: 1, max: 27 });
 const generateDateDined = () => faker.date.between('2016-01-01', '2018-12-31');
 const generateRatings = () => faker.random.number({ min: 1, max: 5 });
@@ -9,7 +10,7 @@ const generateNoiseLevel = () => faker.random.arrayElement(['do not recall', 'qu
 const generateRecommend = () => faker.random.boolean();
 const generateReviewContent = () => faker.lorem.paragraphs(1);
 const generateHelpfulCount = () => faker.random.number({ min: 0, max: 3 });
-const generateRandomReviewerId = () => faker.random.number(5000000);
+const generateRandomReviewerId = () => faker.random.number(50000000);
 const generateRandomReviewId = () => faker.random.number(50000000);
 const generateTags = () => {
   const tagsArr = [];
@@ -73,12 +74,8 @@ const generateTags = () => {
   return tagsArr;
 };
 
-const createRandomReview = (restId) => {
+const createRandomReview = (revId = generateRandomReviewId()) => {
   return {
-    name: `restaurant${String(restId)}`,
-    restaurant: {
-      id: restId,
-    },
     reviewer: {
       id: generateRandomReviewerId(),
       nickname: generateNickname(),
@@ -87,7 +84,7 @@ const createRandomReview = (restId) => {
       date_dined: generateDateDined(),
     },
     review: {
-      id: generateRandomReviewId(),
+      id: revId,
       ratings: {
         overall: generateRatings(),
         food: generateRatings(),
@@ -104,6 +101,19 @@ const createRandomReview = (restId) => {
   };
 };
 
+const createRandRestaurant = (restId) => {
+  const insertedReviews = [];
+  for (let i = 0; i < generateRestReviewCount(); i += 1) {
+    insertedReviews.push(createRandomReview(i));
+  }
+  return {
+    _id: restId,
+    name: `restaurant${String(restId)}`,
+    reviews: insertedReviews,
+  };
+};
+
 module.exports = {
   createRandomReview,
+  createRandRestaurant,
 };

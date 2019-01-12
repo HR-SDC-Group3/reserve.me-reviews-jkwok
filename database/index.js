@@ -1,6 +1,6 @@
 const uri = 'mongodb://localhost:27017/reserve-me';
 const mongoose = require('mongoose');
-const { createRandomReview } = require('./helpers.js');
+const { createRandomReview, createRandRestaurant } = require('./helpers.js');
 
 const serverOptions = {
   auto_reconnect: true,
@@ -16,15 +16,10 @@ const conn = mongoose.createConnection(uri, {
   useNewUrlParser: true,
 });
 
-const reviewsSchema = mongoose.Schema({
-  name: String,
-  restaurant: {
-    id: Number,
-  },
+const reviewSchema = mongoose.Schema({
   reviewer: {
     id: {
       type: Number,
-      unique: true,
     },
     nickname: String,
     location: String,
@@ -34,7 +29,6 @@ const reviewsSchema = mongoose.Schema({
   review: {
     id: {
       type: Number,
-      unique: true,
     },
     ratings: {
       overall: Number,
@@ -51,42 +45,54 @@ const reviewsSchema = mongoose.Schema({
   },
 });
 
-const Review = conn.model('Review', reviewsSchema);
+const restaurantSchema = mongoose.Schema({
+  _id: Number,
+  name: String,
+  reviews: [reviewSchema],
+});
 
+const Restaurant = conn.model('Restaurant', restaurantSchema);
+
+// Legacy Code - No longer applies //
 const save = (reviews, callback) => {
-  Review.insertMany(reviews, callback);
+  Restaurant.insertMany(reviews, callback);
 };
+// ************************* //
 
-const retrieveReviews = (restId, sort, callback) => {
-  let sortQuery;
-  if (sort === 'newest') {
-    sortQuery = { 'reviewer.date_dined': -1 };
-  } else if (sort === 'highest_rating') {
-    sortQuery = { 'review.ratings.overall': -1 };
-  } else if (sort === 'lowest_rating') {
-    sortQuery = { 'review.ratings.overall': 1 };
-  }
-  Review.find({ restaurant: { id: restId } })
-    .sort(sortQuery)
+const retrieveReviews = (restId, callback) => {
+  Restaurant.findOne({ _id: restId })
     .exec(callback);
 };
 
-const addReviews = (restId, qty, callback) => {
-  const reviews = [];
-  for (let i = 0; i < qty; i += 1) {
-    reviews.push(createRandomReview(restId));
-  }
-  Review.create(reviews, callback);
+const addReview = (restId, callback) => {
+  Restaurant.findOneAndUpdate(
+    { _id: restId },
+    { $push: {reviews: createRandomReview()} },
+    callback,
+  );
+};
+
+const replaceReviews = (restId, callback) => {
+  Restaurant.findOneAndReplace(
+    { _id: restId },
+    createRandRestaurant(restId),
+    callback,
+  );
 };
 
 const deleteReviews = (restId, callback) => {
-  Review.deleteMany({ restaurant: { id: restId } }, callback);
+  Restaurant.findOneAndUpdate(
+    { _id: restId },
+    { reviews: [] },
+    callback,
+  );
 };
 
 module.exports = {
   conn,
   save,
   retrieveReviews,
-  addReviews,
+  addReview,
+  replaceReviews,
   deleteReviews,
 };

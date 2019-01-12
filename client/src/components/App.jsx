@@ -29,7 +29,7 @@ export default class App extends React.Component {
         this.setState({
           reviews: data,
         });
-      });
+      }).catch(err => console.error(err));
   }
 
   getReviewsSorted() {
@@ -42,7 +42,7 @@ export default class App extends React.Component {
         this.setState({
           reviews: data,
         });
-      });
+      }).catch(err => console.error(err));
   }
 
   handleSortByChange(sort) {
