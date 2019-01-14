@@ -46,8 +46,14 @@ const reviewSchema = mongoose.Schema({
 });
 
 const restaurantSchema = mongoose.Schema({
-  _id: Number,
-  name: String,
+  _id: {
+    type: Number,
+    unique: true,
+  },
+  name: {
+    type: String,
+    unique: true,
+  },
   reviews: [reviewSchema],
 });
 
