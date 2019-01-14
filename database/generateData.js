@@ -5,7 +5,7 @@ const {
 } = require('./helpers.js');
 
 const dbName = 'Postgres';   // Set to Mongo or Postgres depending on which db to seed
-const numRecords = 100000;
+const numRecords = 1000;
 let percentComplete = 0;
 let i = 1;
 console.time('Runtime');
@@ -48,7 +48,7 @@ if (dbName === 'Mongo') {
   const writeStreamRev = fs.createWriteStream(path.join(__dirname, `/data/sampleData${dbName}Rev.csv`));
   writeStreamRest.write('id,name\n');
   writeStreamRev.write('restaurant_id,review_id,overall,food,service,ambience,value,\
-noise_level,recommend_to_friend,text,helpful_count,tags,reviewer_id,nickname,location,\
+noise_level,recommend_to_friend,review_text,helpful_count,tags,reviewer_id,nickname,location,\
 review_count,date_dined\n');
 
   const createReviewEntries = (restId) => {
