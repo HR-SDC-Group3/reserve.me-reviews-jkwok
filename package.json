@@ -17,7 +17,7 @@
     "test:coverage": "jest --coverage --colors",
     "writeData": "node database/generateData.js",
     "mongoSeed": "mongoimport --db reserve-me --collection restaurants --file database/data/sampleDataMongo.csv",
-    "postgresSchema": "psql -U johnsonkwok < database/postgres/schema.sql"
+    "postgresSchema": "psql -U postgres < database/postgres/schema.sql"
   },
   "dependencies": {
     "@types/url-parse": "^1.4.1",
