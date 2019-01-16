@@ -122,7 +122,7 @@ const createRandomReviewSQL = (restId, revId) => {
 ${generateRatings()},${generateRatings()},${generateNoiseLevel()},\
 ${generateRecommend()},${generateReviewContent()},${generateHelpfulCount()},\
 ${generateTags().join('|')},${generateRandomReviewerId()},${generateNickname()},\
-${generateLocation()},${generateReviewCount()},${generateDateDined()}\n`;
+${generateLocation()},${generateReviewCount()},${generateDateDined().toISOString()}\n`;
 };
 
 module.exports = {

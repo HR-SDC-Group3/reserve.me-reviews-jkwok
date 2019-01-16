@@ -5,14 +5,14 @@ const {
 } = require('./helpers.js');
 
 const dbName = 'Postgres';   // Set to Mongo or Postgres depending on which db to seed
-const numRecords = 1000;
+const numRecords = 10000000;
 let percentComplete = 0;
 let i = 1;
 console.time('Runtime');
 
 const createCompletionStatusLog = () => {
-  if (i % (numRecords / 20) === 0 && i !== 0) {
-    percentComplete += 5;
+  if (i % (numRecords / 100) === 0 && i !== 0) {
+    percentComplete += 1;
     const loadingMsg = `Writing to file...[${percentComplete}% complete]`;
     console.log(loadingMsg);
   }

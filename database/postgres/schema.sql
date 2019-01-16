@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   nickname TEXT NOT NULL,
   location TEXT NOT NULL,
   review_count INTEGER NOT NULL,
-  date_dined TEXT NOT NULL
+  date_dined DATE NOT NULL
 );
 
 COPY restaurants(id, name) FROM '/Users/johnsonkwok/Documents/HR/Week-8/SDC/reviews-service/database/data/sampleDataPostgresRest.csv'
@@ -37,4 +37,9 @@ COPY restaurants(id, name) FROM '/Users/johnsonkwok/Documents/HR/Week-8/SDC/revi
 COPY reviews(restaurant_id,review_id,overall,food,service,ambience,value,noise_level,recommend_to_friend,review_text,helpful_count,tags,reviewer_id,nickname,location,review_count,date_dined) 
   FROM '/Users/johnsonkwok/Documents/HR/Week-8/SDC/reviews-service/database/data/sampleDataPostgresRev.csv'
   WITH (FORMAT CSV, HEADER);
+
+CREATE INDEX foreign_key on reviews (restaurant_id);
+
+CREATE INDEX name_index on restaurants (name);
+
 \timing
