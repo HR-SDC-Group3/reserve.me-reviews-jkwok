@@ -46,8 +46,14 @@ const reviewSchema = mongoose.Schema({
 });
 
 const restaurantSchema = mongoose.Schema({
-  _id: Number,
-  name: String,
+  _id: {
+    type: Number,
+    unique: true,
+  },
+  name: {
+    type: String,
+    unique: true,
+  },
   reviews: [reviewSchema],
 });
 
@@ -72,6 +78,14 @@ const addReview = (restId, callback) => {
   );
 };
 
+const addReviewWithId = (restId, randomReview, callback) => {
+  Restaurant.findOneAndUpdate(
+    { _id: restId },
+    { $push: {reviews: randomReview} },
+    callback,
+  );
+};
+
 const replaceReviews = (restId, callback) => {
   Restaurant.findOneAndReplace(
     { _id: restId },
@@ -88,11 +102,21 @@ const deleteReviews = (restId, callback) => {
   );
 };
 
+const deleteOneReview = (restId, revId, callback) => {
+  Restaurant.findOneAndUpdate(
+    { _id: restId },
+    { $pop: { reviews: 1 } },
+    callback,
+  );
+};
+
 module.exports = {
   conn,
   save,
   retrieveReviews,
   addReview,
+  addReviewWithId,
   replaceReviews,
   deleteReviews,
+  deleteOneReview,
 };

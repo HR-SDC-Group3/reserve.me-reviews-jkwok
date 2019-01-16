@@ -113,7 +113,21 @@ const createRandRestaurant = (restId) => {
   };
 };
 
+const createRandRestaurantSQL = (restId) => {
+  return `${restId},restaurant${String(restId)}\n`;
+};
+
+const createRandomReviewSQL = (restId, revId) => {
+  return `${restId},${revId},${generateRatings()},${generateRatings()},${generateRatings()},\
+${generateRatings()},${generateRatings()},${generateNoiseLevel()},\
+${generateRecommend()},${generateReviewContent()},${generateHelpfulCount()},\
+${generateTags().join('|')},${generateRandomReviewerId()},${generateNickname()},\
+${generateLocation()},${generateReviewCount()},${generateDateDined().toISOString()}\n`;
+};
+
 module.exports = {
-  createRandomReview,
   createRandRestaurant,
+  createRandRestaurantSQL,
+  createRandomReviewSQL,
+  generateRestReviewCount,
 };

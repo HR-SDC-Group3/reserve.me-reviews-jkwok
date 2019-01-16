@@ -6,7 +6,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const _ = require('underscore');
-const db = require('./../database/index.js');
+const db = require('./../database/index.js');   // if using MongoDB
+// const db = require('./../database/postgres/index.js');     // if using Postgres
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
@@ -45,6 +46,8 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
       });
     }
     res.send(reviews);
+    // console.log(results.rows);
+    // res.send(results.rows);
   });
 });
 
