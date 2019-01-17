@@ -117,7 +117,7 @@ const createRandRestaurantSQL = (restId) => {
   return `${restId},restaurant${String(restId)}\n`;
 };
 
-const createRandomReviewSQL = (restId, revId) => {
+const createRandomReviewSQL = (restId, revId = generateRandomReviewId()) => {
   return `${restId},${revId},${generateRatings()},${generateRatings()},${generateRatings()},\
 ${generateRatings()},${generateRatings()},${generateNoiseLevel()},\
 ${generateRecommend()},${generateReviewContent()},${generateHelpfulCount()},\
@@ -125,9 +125,18 @@ ${generateTags().join('|')},${generateRandomReviewerId()},${generateNickname()},
 ${generateLocation()},${generateReviewCount()},${generateDateDined().toISOString()}\n`;
 };
 
+const createRandomReviewPg = (restId, revId = generateRandomReviewId()) => {
+  return `${restId},${revId},${generateRatings()},${generateRatings()},${generateRatings()},\
+${generateRatings()},${generateRatings()},'${generateNoiseLevel()}',\
+${generateRecommend()},'${generateReviewContent()}',${generateHelpfulCount()},\
+'${generateTags().join('|')}',${generateRandomReviewerId()},'${generateNickname()}',\
+'${generateLocation()}',${generateReviewCount()},'${generateDateDined().toISOString()}'\n`;
+};
+
 module.exports = {
   createRandRestaurant,
   createRandRestaurantSQL,
   createRandomReviewSQL,
+  createRandomReviewPg,
   generateRestReviewCount,
 };

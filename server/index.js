@@ -6,10 +6,11 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const _ = require('underscore');
-const db = require('./../database/index.js');   // if using MongoDB
-// const db = require('./../database/postgres/index.js');     // if using Postgres
+// const db = require('./../database/index.js');   // if using MongoDB
+const db = require('./../database/postgres/index.js');     // if using Postgres
 
 app.use(morgan('tiny'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
 
@@ -26,12 +27,37 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   if (req.query.sort) {
     sort = req.query.sort;
   }
-  const parsedId = parseInt(req.params.id, 10);
-  db.retrieveReviews(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.retrieveReviews(restId, (err, results) => {
     if (err) {
       res.status(404).end();
     }
-    let reviews = (results === null) ? [] : results.reviews;
+    let reviews = results.rows.map((review) => {
+      return {
+        reviewer: {
+          id: review.reviewer_id,
+          nickname: review.nickname,
+          location: review.location,
+          review_count: review.review_count,
+          date_dined: review.date_dined,
+        },
+        review: {
+          id: review.id,
+          ratings: {
+            overall: review.overall,
+            food: review.food,
+            service: review.service,
+            ambience: review.ambience,
+            value: review.value,
+            noise_level: review.noise_level,
+          },
+          recommend_to_friend: review.recommend_to_friend,
+          text: review.review_text,
+          helpful_count: review.helpful_count,
+          tags: review.tags.split('|'),
+        },
+      };
+    });
     if (reviews.length > 0) {
       reviews = _.sortBy(reviews, (review) => {
         if (sort === 'newest') {
@@ -46,14 +72,12 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
       });
     }
     res.send(reviews);
-    // console.log(results.rows);
-    // res.send(results.rows);
   });
 });
 
 app.post('/api/restaurants/:id/reviews/', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.addReview(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.addReview(restId, (err, results) => {
     if (err) {
       res.status(404).send();
     }
@@ -61,9 +85,11 @@ app.post('/api/restaurants/:id/reviews/', (req, res) => {
   });
 });
 
-app.put('/api/restaurants/:id/reviews/', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.replaceReviews(parsedId, (err, results) => {
+app.put('/api/restaurants/:id/reviews/:revid', (req, res) => {
+  const restId = parseInt(req.params.id, 10);
+  const revId = req.params.revid;
+  const newText = req.body.review_text;
+  db.updateReview(restId, revId, newText, (err, results) => {
     if (err) {
       res.status(404).end();
     }
@@ -72,8 +98,8 @@ app.put('/api/restaurants/:id/reviews/', (req, res) => {
 });
 
 app.delete('/api/restaurants/:id/reviews', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.deleteReviews(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.deleteReviews(restId, (err, results) => {
     if (err) {
       res.status(404).end();
     }
