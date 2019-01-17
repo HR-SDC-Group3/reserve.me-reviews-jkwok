@@ -80,6 +80,7 @@ app.post('/api/restaurants/:id/reviews/', (req, res) => {
     if (err) {
       res.status(404).send();
     }
+    console.log('post results', results);
     res.status(201).send(results);
   });
 });
