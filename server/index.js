@@ -80,7 +80,6 @@ app.post('/api/restaurants/:id/reviews/', (req, res) => {
     if (err) {
       res.status(404).send();
     }
-    console.log('post results', results);
     res.status(201).send(results);
   });
 });
@@ -97,7 +96,7 @@ app.put('/api/restaurants/:id/reviews/', (req, res) => {
 
 app.delete('/api/restaurants/:id/reviews', (req, res) => {
   const parsedId = parseInt(req.params.id, 10);
-  db.deleteReviews(parsedId, (err, results) => {
+  db.deleteReview(parsedId, (err, results) => {
     if (err) {
       res.status(404).end();
     }

@@ -21,7 +21,14 @@ const addReview = (restId, callback) => {
     review_count,date_dined) VALUES(${createRandomReviewPg(restId)});`, callback);
 };
 
+const deleteReviews = (restId, callback) => {
+  pool.query(`DELETE FROM reviews WHERE restaurant_id = ${restId} AND id > 37042302;`, callback);
+};
+
+
+
 module.exports = {
   retrieveReviews,
   addReview,
+  deleteReviews,
 };
