@@ -10,6 +10,7 @@ const _ = require('underscore');
 const db = require('./../database/postgres/index.js');     // if using Postgres
 
 app.use(morgan('tiny'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
 
@@ -26,8 +27,8 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   if (req.query.sort) {
     sort = req.query.sort;
   }
-  const parsedId = parseInt(req.params.id, 10);
-  db.retrieveReviews(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.retrieveReviews(restId, (err, results) => {
     if (err) {
       res.status(404).end();
     }
@@ -75,8 +76,8 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
 });
 
 app.post('/api/restaurants/:id/reviews/', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.addReview(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.addReview(restId, (err, results) => {
     if (err) {
       res.status(404).send();
     }
@@ -84,9 +85,11 @@ app.post('/api/restaurants/:id/reviews/', (req, res) => {
   });
 });
 
-app.put('/api/restaurants/:id/reviews/', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.replaceReviews(parsedId, (err, results) => {
+app.put('/api/restaurants/:id/reviews/:revid', (req, res) => {
+  const restId = parseInt(req.params.id, 10);
+  const revId = req.params.revid;
+  const newText = req.body.review_text;
+  db.updateReview(restId, revId, newText, (err, results) => {
     if (err) {
       res.status(404).end();
     }
@@ -95,8 +98,8 @@ app.put('/api/restaurants/:id/reviews/', (req, res) => {
 });
 
 app.delete('/api/restaurants/:id/reviews', (req, res) => {
-  const parsedId = parseInt(req.params.id, 10);
-  db.deleteReview(parsedId, (err, results) => {
+  const restId = parseInt(req.params.id, 10);
+  db.deleteReviews(restId, (err, results) => {
     if (err) {
       res.status(404).end();
     }

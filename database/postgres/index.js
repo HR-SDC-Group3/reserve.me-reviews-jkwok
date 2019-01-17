@@ -25,10 +25,13 @@ const deleteReviews = (restId, callback) => {
   pool.query(`DELETE FROM reviews WHERE restaurant_id = ${restId} AND id > 37042302;`, callback);
 };
 
-
+const updateReview = (restId, revId, newText, callback) => {
+  pool.query(`UPDATE reviews SET review_text='${newText}' WHERE restaurant_id=${restId} AND review_id=${revId};`, callback);
+};
 
 module.exports = {
   retrieveReviews,
   addReview,
   deleteReviews,
+  updateReview,
 };
