@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 
 const app = express();
@@ -54,7 +55,7 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
           recommend_to_friend: review.recommend_to_friend,
           text: review.review_text,
           helpful_count: review.helpful_count,
-          tags: review.tags.split('|'),
+          tags: (review.tags === null) ? [] : review.tags.split('|'),
         },
       };
     });
