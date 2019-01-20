@@ -12,9 +12,9 @@ export default function() {
   // const response = http.get(`http://localhost:3004/api/restaurants/${randomId}/reviews`);    // reviews service
   const response = http.post(`http://localhost:3004/api/restaurants/${randomId}/reviews`);      // reviews service
   check(response, {
-    // "status was 200": (r) => r.status == 200,    // for GET requests
-    "status was 201": (r) => r.status == 201,       // for POST requests
-    "transaction time OK": (r) => r.timings.duration < 2000
+    // 'status was 200': (r) => r.status == 200,    // for GET requests
+    'status was 201': (r) => r.status == 201,       // for POST requests
+    'transaction time OK': (r) => r.timings.duration < 2000
   });
   // sleep(0.05);
 };
