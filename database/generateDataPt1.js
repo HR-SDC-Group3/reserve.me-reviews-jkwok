@@ -4,8 +4,8 @@ const {
   createRandRestaurant, createRandRestaurantSQL, createRandomReviewSQL, generateRestReviewCount,
 } = require('./helpers.js');
 
-const dbName = 'Postgres';   // Set to Mongo or Postgres depending on which db to seed
-const numRecords = 10000000;
+const dbName = 'Postgres1';   // Set to Mongo or Postgres depending on which db to seed
+const numRecords = 5000000;
 let percentComplete = 0;
 let i = 1;
 console.time('Runtime');
