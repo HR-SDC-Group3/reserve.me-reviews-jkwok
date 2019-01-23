@@ -1,4 +1,14 @@
+require('newrelic');
 const express = require('express');
+const redis = require('redis');
+
+const client = redis.createClient();
+client.on('connect', () => {
+  console.log('Connected to Redis cache');
+});
+client.on('error', err => {
+  console.log(`Redis Connection Error: ${err}`);
+});
 
 const app = express();
 const port = 3004;
@@ -6,7 +16,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const _ = require('underscore');
-// const db = require('./../database/index.js');   // if using MongoDB
+// const db = require('./../database/index.js');           // if using MongoDB
 const db = require('./../database/postgres/index.js');     // if using Postgres
 
 app.use(morgan('tiny'));
@@ -28,36 +38,7 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
     sort = req.query.sort;
   }
   const restId = parseInt(req.params.id, 10);
-  db.retrieveReviews(restId, (err, results) => {
-    if (err) {
-      res.status(404).end();
-    }
-    let reviews = results.rows.map((review) => {
-      return {
-        reviewer: {
-          id: review.reviewer_id,
-          nickname: review.nickname,
-          location: review.location,
-          review_count: review.review_count,
-          date_dined: review.date_dined,
-        },
-        review: {
-          id: review.id,
-          ratings: {
-            overall: review.overall,
-            food: review.food,
-            service: review.service,
-            ambience: review.ambience,
-            value: review.value,
-            noise_level: review.noise_level,
-          },
-          recommend_to_friend: review.recommend_to_friend,
-          text: review.review_text,
-          helpful_count: review.helpful_count,
-          tags: review.tags.split('|'),
-        },
-      };
-    });
+  const sortReviews = (reviews) => {
     if (reviews.length > 0) {
       reviews = _.sortBy(reviews, (review) => {
         if (sort === 'newest') {
@@ -71,7 +52,49 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
         }
       });
     }
-    res.send(reviews);
+    return reviews;
+  };
+
+  client.get(`${restId}`, (redisErr, cacheResults) => {
+    if (cacheResults) {
+      const sortedReviews = sortReviews(JSON.parse(cacheResults));
+      return res.send(sortedReviews);
+    }
+
+    db.retrieveReviews(restId, (err, results) => {
+      if (err) {
+        res.status(404).end();
+      }
+      let reviews = results.rows.map((review) => {
+        return {
+          reviewer: {
+            id: review.reviewer_id,
+            nickname: review.nickname,
+            location: review.location,
+            review_count: review.review_count,
+            date_dined: review.date_dined,
+          },
+          review: {
+            id: review.id,
+            ratings: {
+              overall: review.overall,
+              food: review.food,
+              service: review.service,
+              ambience: review.ambience,
+              value: review.value,
+              noise_level: review.noise_level,
+            },
+            recommend_to_friend: review.recommend_to_friend,
+            text: review.review_text,
+            helpful_count: review.helpful_count,
+            tags: (review.tags === null) ? [] : review.tags.split('|'),
+          },
+        };
+      });
+      reviews = sortReviews(reviews);
+      client.set(`${restId}`, JSON.stringify(reviews), redis.print);
+      res.send(reviews);
+    });
   });
 });
 

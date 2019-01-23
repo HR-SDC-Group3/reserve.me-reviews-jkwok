@@ -26,3 +26,6 @@ dist/bundle.js
 
 # Dummy Data
 database/data
+
+# Config files
+newrelic.js

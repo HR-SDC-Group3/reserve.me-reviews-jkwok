@@ -17,7 +17,9 @@
     "test:coverage": "jest --coverage --colors",
     "writeData": "node database/generateData.js",
     "mongoSeed": "mongoimport --db reserve-me --collection restaurants --file database/data/sampleDataMongo.csv",
-    "postgresSchema": "psql -U postgres < database/postgres/schema.sql"
+    "postgresSchema": "psql -U postgres < database/postgres/schema.sql",
+    "stress-test": "k6 run database/postgres/k6Script.js",
+    "redis-stress": "k6 run database/postgres/k6RedisScript.js"
   },
   "dependencies": {
     "@types/url-parse": "^1.4.1",
@@ -31,12 +33,14 @@
     "jest-styled-components": "^6.3.1",
     "mongoose": "^5.4.0",
     "morgan": "^1.9.1",
+    "newrelic": "^5.1.0",
     "nodemon": "^1.18.9",
     "pg": "^7.8.0",
     "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-test-renderer": "^16.7.0",
+    "redis": "^2.8.0",
     "styled-components": "^4.1.3",
     "underscore": "^1.9.1",
     "url-parse": "^1.4.4",
