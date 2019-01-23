@@ -2,8 +2,9 @@ const { Pool } = require('pg');
 const { createRandomReviewPg } = require('../helpers.js');
 
 const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
+  user: 'power_user',
+  host: 'http://13.57.38.232/',
+  password: 'hrsf107-SDC',
   database: 'reserve_me',
 });
 

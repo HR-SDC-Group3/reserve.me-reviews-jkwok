@@ -4,19 +4,20 @@ const {
   createRandRestaurant, createRandRestaurantSQL, createRandomReviewSQL, generateRestReviewCount,
 } = require('./helpers.js');
 
-const dbName = 'Postgres2';   // Set to Mongo or Postgres depending on which db to seed
-const numRecords = 10000000;
+const dbName = 'Postgres3';   // Set to Mongo or Postgres depending on which db to seed
+const lastRecord = 10000000;
 let percentComplete = 0;
-let i = 5000001;
+let i = 7500001;
+const numRecords = lastRecord - i;
 console.time('Runtime');
 
 const createCompletionStatusLog = () => {
-  if (i % (numRecords / 100) === 0 && i !== 0) {
+  if (((i % Math.round(i + (numRecords / 100))) === 0) && i !== 0) {
     percentComplete += 1;
     const loadingMsg = `Writing to file...[${percentComplete}% complete]`;
     console.log(loadingMsg);
   }
-  if (i === numRecords) {
+  if (i === lastRecord) {
     console.log('WRITING HAS COMPLETED!');
     console.timeEnd('Runtime');
   }
@@ -26,7 +27,7 @@ if (dbName === 'Mongo') {
   const writeStream = fs.createWriteStream(path.join(__dirname, `/data/sampleData${dbName}.csv`));
   const writeRecords = () => {
     let notBuffering = true;
-    while (i <= numRecords && notBuffering) {
+    while (i <= lastRecord && notBuffering) {
       const entry = createRandRestaurant(i);
       notBuffering = writeStream.write(`${JSON.stringify(entry)}\n`);
 
@@ -62,7 +63,7 @@ review_count,date_dined\n');
   const writeRecords = () => {
     let notBufferingRestaurant = true;
     let notBufferingReview = true;
-    while (i <= numRecords && notBufferingRestaurant && notBufferingReview) {
+    while (i <= lastRecord && notBufferingRestaurant && notBufferingReview) {
       notBufferingRestaurant = writeStreamRest.write(createRandRestaurantSQL(i));
       notBufferingReview = writeStreamRev.write(createReviewEntries(i));
 
