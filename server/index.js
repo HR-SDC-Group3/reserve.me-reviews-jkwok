@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
 
 app.use('/restaurants/:id', express.static(`${__dirname}/../client/dist`));
+app.use('/loaderio-eec1eb86093cadbb70df3564bb98f2a6.txt', express.static(`${__dirname}/../loaderio-eec1eb86093cadbb70df3564bb98f2a6.txt`));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

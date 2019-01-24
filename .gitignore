@@ -22,10 +22,12 @@ coverage
 
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 build/
-dist/bundle.js
+bundle.js
+client/dist/bundle.js
 
 # Dummy Data
 database/data
 
 # Config files
 newrelic.js
+loaderio*.txt

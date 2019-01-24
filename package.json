@@ -19,7 +19,8 @@
     "mongoSeed": "mongoimport --db reserve-me --collection restaurants --file database/data/sampleDataMongo.csv",
     "postgresSchema": "psql -U postgres < database/postgres/schema.sql",
     "stress-test": "k6 run database/postgres/k6Script.js",
-    "redis-stress": "k6 run database/postgres/k6RedisScript.js"
+    "redis-stress": "k6 run database/postgres/k6RedisScript.js",
+    "build-prod": "webpack -p"
   },
   "dependencies": {
     "@types/url-parse": "^1.4.1",
