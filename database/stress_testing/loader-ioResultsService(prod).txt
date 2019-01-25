@@ -1,0 +1,24 @@
+LOADER.IO STRESS TEST RESULTS (Durations: Limited to 1 min)
+
+Reserve.me Reviews Service EC2 Stress Testing (Production, WITHOUT Redis)
+Endpoint: GET http://54.215.243.107:3004/api/restaurants/%{*:8000000-10000000}/reviews
+
+        RESPONSE TIMES (MS)
+RPS     AVG     MIN     MAX     ERR RATE
+1       152     71      380     0.0%
+10      256     65      1154    0.0%
+25      343     63      1523    0.0%
+
+
+Reserve.me Reviews Service EC2 Stress Testing (Production, WITH Redis)
+Endpoint: GET http://54.215.243.107:3004/api/restaurants/random/reviews
+
+        RESPONSE TIMES (MS)
+RPS     AVG     MIN     MAX     ERR RATE
+5       204     64      853     0.0%
+10      195     63      1240    0.0%
+25      192     62      1715    0.0%
+30      220     62      2180    0.0%
+50      1280    148     4309    0.0%
+
+
