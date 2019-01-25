@@ -3,7 +3,7 @@ const { createRandomReviewPg } = require('../helpers.js');
 
 const pool = new Pool({
   user: 'power_user',
-  host: 'http://13.57.38.232/',
+  host: '54.193.118.205',   // CHANGE TO IP ADDRESS OF CURRENT INSTANCE
   password: 'hrsf107-SDC',
   database: 'reserve_me',
 });

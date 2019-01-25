@@ -1,0 +1,472 @@
+// ******************** k6 Setup File (GET requests) ******************** //
+
+import http from 'k6/http';
+import { sleep, check } from 'k6';
+
+export const options = {
+  vus: 100,
+  rps: 1000,
+  duration: '5m',
+};
+
+export default function() {
+  const randomId = Math.floor(Math.random() * (10000000 - 9000000 + 1)) + 9000000;
+  const response = http.get(`http://localhost:3004/api/restaurants/${randomId}/reviews`);
+  check(response, {
+    "status was 200": (r) => r.status == 200,
+    "transaction time OK": (r) => r.timings.duration < 2000
+  });
+  // sleep(0.05);
+};
+
+// ******************** 1 RPS GET (1 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 1m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 1m0s / 1m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 120   ✗ 0
+    data_received..............: 142 kB  2.4 kB/s
+    data_sent..................: 6.7 kB  110 B/s
+    http_req_blocked...........: avg=612.86µs min=347µs    med=522.49µs max=2.83ms  p(90)=798.3µs p(95)=1.06ms
+    http_req_connecting........: avg=405.61µs min=215µs    med=347µs    max=1.56ms  p(90)=585.8µs p(95)=768.49µs
+    http_req_duration..........: avg=7.17ms   min=3.84ms   med=6.3ms    max=38.95ms p(90)=10.03ms p(95)=10.85ms
+    http_req_receiving.........: avg=58.1µs   min=33µs     med=52.5µs   max=149µs   p(90)=86.2µs  p(95)=91.09µs
+    http_req_sending...........: avg=149.15µs min=72µs     med=132µs    max=868µs   p(90)=206.5µs p(95)=224.04µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s      p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=6.96ms   min=3.68ms   med=6.09ms   max=38.74ms p(90)=9.88ms  p(95)=10.62ms
+    http_reqs..................: 60      0.999998/s
+    iteration_duration.........: avg=29.61s   min=145.54ms med=29.61s   max=59.11s  p(90)=53.21s  p(95)=56.16s
+    iterations.................: 60      0.999998/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+
+// ******************** 10 RPS GET (1 min) ******************** //
+
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 1m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 1m0s / 1m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 12000 ✗ 0
+    data_received..............: 15 MB   243 kB/s
+    data_sent..................: 666 kB  11 kB/s
+    http_req_blocked...........: avg=16.44µs  min=4µs     med=7µs      max=2.81ms   p(90)=13µs   p(95)=23µs
+    http_req_connecting........: avg=4.89µs   min=0s      med=0s       max=591µs    p(90)=0s     p(95)=0s
+    http_req_duration..........: avg=5.91ms   min=1.26ms  med=2.63ms   max=481.41ms p(90)=5.38ms p(95)=8.36ms
+    http_req_receiving.........: avg=59.3µs   min=29µs    med=50µs     max=1.57ms   p(90)=85µs   p(95)=106µs
+    http_req_sending...........: avg=40.51µs  min=20µs    med=34µs     max=425µs    p(90)=60µs   p(95)=79µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s       p(90)=0s     p(95)=0s
+    http_req_waiting...........: avg=5.81ms   min=1.2ms   med=2.53ms   max=481.29ms p(90)=5.25ms p(95)=8.24ms
+    http_reqs..................: 6000    99.999451/s
+    iteration_duration.........: avg=991.67ms min=47.14ms med=999.91ms max=1.49s    p(90)=1s     p(95)=1s
+    iterations.................: 6000    99.999451/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+
+// ******************** 100 RPS GET (1 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 1m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 1m0s / 1m0s
+
+    ✓ transaction time OK
+    ✓ status was 200
+
+    checks.....................: 100.00% ✓ 1200  ✗ 0
+    data_received..............: 1.4 MB  24 kB/s
+    data_sent..................: 67 kB   1.1 kB/s
+    http_req_blocked...........: avg=484.42µs min=271µs   med=458µs   max=2.58ms  p(90)=593.2µs p(95)=649.05µs
+    http_req_connecting........: avg=350.37µs min=202µs   med=331.5µs max=1.23ms  p(90)=428.1µs p(95)=475.04µs
+    http_req_duration..........: avg=4.07ms   min=1.89ms  med=3.67ms  max=40.55ms p(90)=5.87ms  p(95)=6.69ms
+    http_req_receiving.........: avg=57.14µs  min=32µs    med=48µs    max=261µs   p(90)=87µs    p(95)=103.04µs
+    http_req_sending...........: avg=122.04µs min=57µs    med=108.5µs max=1.74ms  p(90)=167µs   p(95)=194.19µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s      p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=3.89ms   min=1.76ms  med=3.5ms   max=40.34ms p(90)=5.63ms  p(95)=6.53ms
+    http_reqs..................: 600     9.999967/s
+    iteration_duration.........: avg=9.16s    min=95.95ms med=9.99s   max=10.01s  p(90)=10s     p(95)=10s
+    iterations.................: 600     9.999967/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+
+// ******************** 1000 RPS GET (1 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 1m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 1m0s / 1m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 67458 ✗ 0
+    data_received..............: 83 MB   1.4 MB/s
+    data_sent..................: 3.7 MB  62 kB/s
+    http_req_blocked...........: avg=6.56µs   min=2µs      med=4µs      max=3.51ms   p(90)=6µs      p(95)=8µs
+    http_req_connecting........: avg=1.04µs   min=0s       med=0s       max=3.39ms   p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=177.03ms min=107.98ms med=161.04ms max=623.51ms p(90)=229.07ms p(95)=293.18ms
+    http_req_receiving.........: avg=48.11µs  min=21µs     med=42µs     max=981µs    p(90)=65µs     p(95)=80µs
+    http_req_sending...........: avg=27.17µs  min=10µs     med=23µs     max=671µs    p(90)=37µs     p(95)=46µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s       p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=176.95ms min=107.92ms med=160.97ms max=623.4ms  p(90)=228.97ms p(95)=293.09ms
+    http_reqs..................: 33729   562.149674/s
+    iteration_duration.........: avg=177.65ms min=108.35ms med=161.46ms max=624.35ms p(90)=229.48ms p(95)=295.48ms
+    iterations.................: 33729   562.149674/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+// ******************** 1 RPS GET (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 600   ✗ 0
+    data_received..............: 749 kB  2.5 kB/s
+    data_sent..................: 33 kB   110 B/s
+    http_req_blocked...........: avg=580.52µs min=279µs   med=572µs   max=1.66ms  p(90)=745.1µs p(95)=828.3µs
+    http_req_connecting........: avg=411.17µs min=207µs   med=402.5µs max=686µs   p(90)=536.1µs p(95)=575.14µs
+    http_req_duration..........: avg=5.45ms   min=2.53ms  med=5.04ms  max=37.71ms p(90)=7.92ms  p(95)=8.99ms
+    http_req_receiving.........: avg=78.38µs  min=34µs    med=66µs    max=299µs   p(90)=127.2µs p(95)=164.4µs
+    http_req_sending...........: avg=154.42µs min=57µs    med=147µs   max=305µs   p(90)=221.1µs p(95)=247.2µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s      p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=5.22ms   min=2.4ms   med=4.82ms  max=37.52ms p(90)=7.7ms   p(95)=8.71ms
+    http_reqs..................: 300     0.999999/s
+    iteration_duration.........: avg=1m23s    min=90.34ms med=1m39s   max=1m40s   p(90)=1m40s   p(95)=1m40s
+    iterations.................: 300     0.999999/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+// ******************** 10 RPS GET (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✓ transaction time OK
+    ✓ status was 200
+
+    checks.....................: 100.00% ✓ 6000  ✗ 0
+    data_received..............: 7.3 MB  24 kB/s
+    data_sent..................: 333 kB  1.1 kB/s
+    http_req_blocked...........: avg=589.9µs  min=268µs   med=572µs  max=2.11ms  p(90)=802µs    p(95)=875µs
+    http_req_connecting........: avg=427.98µs min=193µs   med=411µs  max=1.6ms   p(90)=587µs    p(95)=641.04µs
+    http_req_duration..........: avg=3.94ms   min=1.8ms   med=3.63ms max=39.52ms p(90)=5.46ms   p(95)=6.45ms
+    http_req_receiving.........: avg=75.63µs  min=36µs    med=65µs   max=1.28ms  p(90)=116µs    p(95)=145µs
+    http_req_sending...........: avg=144.98µs min=57µs    med=136µs  max=698µs   p(90)=214.09µs p(95)=242µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s     max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=3.72ms   min=1.63ms  med=3.4ms  max=39.3ms  p(90)=5.21ms   p(95)=6.21ms
+    http_reqs..................: 3000    9.999992/s
+    iteration_duration.........: avg=9.83s    min=92.36ms med=9.99s  max=10.02s  p(90)=10s      p(95)=10s
+    iterations.................: 3000    9.999992/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+// ******************** 100 RPS GET (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 60000 ✗ 0
+    data_received..............: 73 MB   245 kB/s
+    data_sent..................: 3.3 MB  11 kB/s
+    http_req_blocked...........: avg=10.23µs  min=2µs    med=7µs      max=1.57ms   p(90)=10µs   p(95)=19µs
+    http_req_connecting........: avg=1µs      min=0s     med=0s       max=738µs    p(90)=0s     p(95)=0s
+    http_req_duration..........: avg=3.48ms   min=1.16ms med=2.17ms   max=247.15ms p(90)=3.9ms  p(95)=5.77ms
+    http_req_receiving.........: avg=54.91µs  min=19µs   med=48µs     max=3.22ms   p(90)=74µs   p(95)=92µs
+    http_req_sending...........: avg=38.68µs  min=16µs   med=33µs     max=913µs    p(90)=54µs   p(95)=70µs
+    http_req_tls_handshaking...: avg=0s       min=0s     med=0s       max=0s       p(90)=0s     p(95)=0s
+    http_req_waiting...........: avg=3.39ms   min=1.1ms  med=2.07ms   max=247.03ms p(90)=3.79ms p(95)=5.67ms
+    http_reqs..................: 30000   99.999949/s
+    iteration_duration.........: avg=998.44ms min=113ms  med=999.96ms max=1.24s    p(90)=1s     p(95)=1s
+    iterations.................: 29995   99.983282/s
+    vus........................: 100     min=100 max=100
+    vus_max....................: 100     min=100 max=100
+
+
+
+// ******************** 1000 RPS GET (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✓ status was 200
+    ✓ transaction time OK
+
+    checks.....................: 100.00% ✓ 335146 ✗ 0
+    data_received..............: 410 MB  1.4 MB/s
+    data_sent..................: 19 MB   62 kB/s
+    http_req_blocked...........: avg=7.45µs   min=1µs     med=5µs      max=17.66ms p(90)=7µs      p(95)=11µs
+    http_req_connecting........: avg=1.33µs   min=0s      med=0s       max=11.55ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=127.42ms min=24.87ms med=113.36ms max=1s      p(90)=185.25ms p(95)=252.24ms
+    http_req_receiving.........: avg=46.88µs  min=14µs    med=42µs     max=1.8ms   p(90)=64µs     p(95)=78µs
+    http_req_sending...........: avg=28.5µs   min=8µs     med=25µs     max=3.4ms   p(90)=39µs     p(95)=49µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s       max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=127.35ms min=24.81ms med=113.29ms max=1s      p(90)=185.19ms p(95)=252.14ms
+    http_reqs..................: 167573  558.576341/s
+    iteration_duration.........: avg=178.79ms min=77.91ms med=164.58ms max=1.06s   p(90)=236.65ms p(95)=303.97ms
+    iterations.................: 167556  558.519675/s
+    vus........................: 100     min=100  max=100
+    vus_max....................: 100     min=100  max=100
+
+// ******************** k6 Setup File (POST requests) ******************** //
+
+import http from 'k6/http';
+import { sleep, check } from 'k6';
+
+export const options = {
+  vus: 100,
+  rps: 1000,
+  duration: '5m',
+};
+
+export default function() {
+  const randomId = Math.floor(Math.random() * (10000000 - 9000000 + 1)) + 9000000;
+  const response = http.post(`http://localhost:3004/api/restaurants/${randomId}/reviews`);      // reviews service
+  check(response, {
+    "status was 201": (r) => r.status == 201,       // for POST requests
+    "transaction time OK": (r) => r.timings.duration < 2000
+  });
+};
+
+// ******************** 1 RPS POST (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    data_received..............: 139 kB 461 B/s
+    data_sent..................: 39 kB  130 B/s
+    http_req_blocked...........: avg=555.04µs min=272µs   med=564µs   max=2.49ms  p(90)=716µs   p(95)=794.9µs
+    http_req_connecting........: avg=391.86µs min=182µs   med=390.5µs max=1.23ms  p(90)=511µs   p(95)=578.65µs
+    http_req_duration..........: avg=7.45ms   min=3.65ms  med=7.32ms  max=48.36ms p(90)=9.78ms  p(95)=11.2ms
+    http_req_receiving.........: avg=82.93µs  min=32µs    med=54µs    max=5.47ms  p(90)=89µs    p(95)=99.1µs
+    http_req_sending...........: avg=139.85µs min=52µs    med=132µs   max=590µs   p(90)=201.2µs p(95)=226.05µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s      max=0s      p(90)=0s      p(95)=0s
+    http_req_waiting...........: avg=7.22ms   min=3.49ms  med=7.1ms   max=46.56ms p(90)=9.58ms  p(95)=10.99ms
+    http_reqs..................: 300    0.999999/s
+    iteration_duration.........: avg=1m23s    min=54.36ms med=1m39s   max=1m40s   p(90)=1m40s   p(95)=1m40s
+    iterations.................: 300    0.999999/s
+    vus........................: 100    min=100 max=100
+    vus_max....................: 100    min=100 max=100
+
+// ******************** 10 RPS POST (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    data_received..............: 1.4 MB 4.6 kB/s
+    data_sent..................: 393 kB 1.3 kB/s
+    http_req_blocked...........: avg=568.87µs min=244µs   med=525µs  max=10.03ms p(90)=783µs    p(95)=915.04µs
+    http_req_connecting........: avg=415.68µs min=176µs   med=378µs  max=9.82ms  p(90)=568.09µs p(95)=671µs
+    http_req_duration..........: avg=5.95ms   min=1.99ms  med=5.57ms max=50.48ms p(90)=8.02ms   p(95)=9.05ms
+    http_req_receiving.........: avg=71.22µs  min=33µs    med=60µs   max=1.01ms  p(90)=111µs    p(95)=139µs
+    http_req_sending...........: avg=146.46µs min=54µs    med=133µs  max=1.07ms  p(90)=227µs    p(95)=264µs
+    http_req_tls_handshaking...: avg=0s       min=0s      med=0s     max=0s      p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=5.73ms   min=1.85ms  med=5.36ms max=50.28ms p(90)=7.75ms   p(95)=8.77ms
+    http_reqs..................: 3000   9.999993/s
+    iteration_duration.........: avg=9.83s    min=53.76ms med=9.99s  max=10.04s  p(90)=10s      p(95)=10s
+    iterations.................: 3000   9.999993/s
+    vus........................: 100    min=100 max=100
+    vus_max....................: 100    min=100 max=100
+
+// ******************** 100 RPS POST (5 min) ******************** //
+
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✗ status was 201
+     ↳  99% — ✓ 29883 / ✗ 125
+    ✓ transaction time OK
+
+    checks.....................: 99.79% ✓ 59875 ✗ 125
+    data_received..............: 14 MB  46 kB/s
+    data_sent..................: 3.9 MB 13 kB/s
+    http_req_blocked...........: avg=11.61µs  min=3µs      med=8µs      max=15.64ms  p(90)=12µs   p(95)=20µs
+    http_req_connecting........: avg=1.76µs   min=0s       med=0s       max=15.5ms   p(90)=0s     p(95)=0s
+    http_req_duration..........: avg=4.69ms   min=1.6ms    med=3.06ms   max=385.84ms p(90)=5.11ms p(95)=6.86ms
+    http_req_receiving.........: avg=58.15µs  min=17µs     med=50µs     max=813µs    p(90)=82µs   p(95)=102µs
+    http_req_sending...........: avg=41.73µs  min=17µs     med=36µs     max=669µs    p(90)=60µs   p(95)=74µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s       p(90)=0s     p(95)=0s
+    http_req_waiting...........: avg=4.59ms   min=1.54ms   med=2.96ms   max=385.75ms p(90)=4.99ms p(95)=6.75ms
+    http_reqs..................: 30000  99.999919/s
+    iteration_duration.........: avg=998.28ms min=106.15ms med=999.94ms max=1.37s    p(90)=1s     p(95)=1s
+    iterations.................: 30000  99.999919/s
+    vus........................: 100    min=100 max=100
+    vus_max....................: 100    min=100 max=100
+
+// ******************** 1000 RPS POST (5 min) ******************** //
+    
+          /\      |‾‾|  /‾‾/  /‾/
+     /\  /  \     |  |_/  /  / /
+    /  \/    \    |      |  /  ‾‾\
+   /          \   |  |‾\  \ | (_) |
+  / __________ \  |__|  \__\ \___/ .io
+
+  execution: local
+     output: -
+     script: database/postgres/k6Script.js
+
+    duration: 5m0s, iterations: -
+         vus: 100,  max: 100
+
+    done [==========================================================] 5m0s / 5m0s
+
+    ✗ status was 201
+     ↳  99% — ✓ 145520 / ✗ 644
+    ✓ transaction time OK
+
+    checks.....................: 99.77% ✓ 291616 ✗ 644
+    data_received..............: 67 MB  225 kB/s
+    data_sent..................: 19 MB  64 kB/s
+    http_req_blocked...........: avg=7.26µs   min=2µs      med=5µs      max=9.67ms p(90)=7µs      p(95)=15µs
+    http_req_connecting........: avg=907ns    min=0s       med=0s       max=9.49ms p(90)=0s       p(95)=0s
+    http_req_duration..........: avg=204.6ms  min=106.98ms med=185.99ms max=1.07s  p(90)=274.1ms  p(95)=341.35ms
+    http_req_receiving.........: avg=49.27µs  min=14µs     med=42µs     max=5.41ms p(90)=67µs     p(95)=85µs
+    http_req_sending...........: avg=31.51µs  min=9µs      med=26µs     max=6.32ms p(90)=46µs     p(95)=58µs
+    http_req_tls_handshaking...: avg=0s       min=0s       med=0s       max=0s     p(90)=0s       p(95)=0s
+    http_req_waiting...........: avg=204.52ms min=106.86ms med=185.91ms max=1.07s  p(90)=274.01ms p(95)=341.24ms
+    http_reqs..................: 146130 487.099918/s
+    iteration_duration.........: avg=205.19ms min=109.06ms med=186.53ms max=1.13s  p(90)=274.5ms  p(95)=341.91ms
+    iterations.................: 146130 487.099918/s
+    vus........................: 100    min=100  max=100
+    vus_max....................: 100    min=100  max=100
