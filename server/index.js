@@ -2,7 +2,10 @@ require('newrelic');
 const express = require('express');
 const redis = require('redis');
 
-const client = redis.createClient();
+const client = redis.createClient({
+  host: '54.183.9.244',
+  port: 6379,
+});
 client.on('connect', () => {
   console.log('Connected to Redis cache');
 });
@@ -19,7 +22,6 @@ const _ = require('underscore');
 // const db = require('./../database/index.js');           // if using MongoDB
 const db = require('./../database/postgres/index.js');     // if using Postgres
 
-app.use(morgan('tiny'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(compression({ threshold: 0 }));
@@ -28,6 +30,7 @@ app.use('/restaurants/:id', express.static(`${__dirname}/../client/dist`));
 
 // MAKE SURE TO CHANGE THE PATH BELOW TO THE CORRECT LOADERIO FILE
 app.use('/loaderio-c06363cb9e949c431c07196476e87a17.txt', express.static(`${__dirname}/../loaderio-c06363cb9e949c431c07196476e87a17.txt`));
+app.use(morgan('tiny'));
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -95,7 +98,7 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
         };
       });
       reviews = sortReviews(reviews);
-      client.set(`${restId}`, JSON.stringify(reviews), 'EX', 60, redis.print);
+      client.set(`${restId}`, JSON.stringify(reviews), 'EX', 3600);
       res.send(reviews);
     });
   });
