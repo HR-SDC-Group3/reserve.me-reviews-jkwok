@@ -31,3 +31,4 @@ database/data
 # Config files
 newrelic.js
 loaderio*.txt
+redis-config.js
