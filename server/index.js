@@ -1,10 +1,12 @@
 require('newrelic');
 const express = require('express');
 const redis = require('redis');
+const { redisPw } = require('../redis-config.js');
 
 const client = redis.createClient({
   host: '54.183.9.244',
   port: 6379,
+  password: `${redisPw}`,
 });
 client.on('connect', () => {
   console.log('Connected to Redis cache');
@@ -38,12 +40,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/api/restaurants/:id/reviews', (req, res) => {
+app.get('/api/restaurants/random/reviews', (req, res) => {
   let sort = 'newest';
   if (req.query.sort) {
     sort = req.query.sort;
   }
-  const restId = parseInt(req.params.id, 10);
+
+  let restId;
+  if (Math.random() < 0.7) {
+    restId = Math.ceil(Math.random() * 100) + 9900000;
+  } else {
+    restId = Math.floor(Math.random() * 9900000);
+  }
+
   const sortReviews = (reviews) => {
     if (reviews.length > 0) {
       reviews = _.sortBy(reviews, (review) => {
@@ -104,19 +113,12 @@ app.get('/api/restaurants/:id/reviews', (req, res) => {
   });
 });
 
-app.get('/api/restaurants/random/reviews', (req, res) => {
+app.get('/api/restaurants/:id/reviews', (req, res) => {
   let sort = 'newest';
   if (req.query.sort) {
     sort = req.query.sort;
   }
-
-  let restId;
-  if (Math.random() < 0.7) {
-    restId = Math.ceil(Math.random() * 100) + 9900000;
-  } else {
-    restId = Math.floor(Math.random() * 9900000);
-  }
-
+  const restId = parseInt(req.params.id, 10);
   const sortReviews = (reviews) => {
     if (reviews.length > 0) {
       reviews = _.sortBy(reviews, (review) => {
